@@ -1,0 +1,26 @@
+.sidebarContainer {
+  display: flex;
+}
+
+.sidebar {
+  background-color: whitesmoke;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: 0.15s ease;
+
+  footer,
+  header {
+    padding: 1rem;
+  }
+
+  section {
+    flex: 1;
+  }
+}
+
+.isCollapsed {
+  width: 0;
+  overflow: hidden;
+}

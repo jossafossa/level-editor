@@ -1,0 +1,30 @@
+#app {
+  height: 100vh;
+}
+
+.levelEditor {
+  display: grid;
+  grid-template-areas: inventory editor properties;
+  grid-template-columns: auto 1fr auto;
+  height: 100%;
+}
+
+.map {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 100vh;
+}
+
+.mapRow {
+  display: flex;
+  width: 100%;
+}
+
+.mapCell {
+  aspect-ratio: 1 / 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
