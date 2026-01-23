@@ -15,4 +15,7 @@ export type MapSize = [number, number];
 
 export type Map = (MapCell | undefined)[][];
 
-export type MapCell = InventoryItem;
+export type MapCell = {
+  inventoryItem?: InventoryItem;
+  rotation?: number;
+};

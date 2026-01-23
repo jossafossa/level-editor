@@ -1,45 +1,74 @@
 import type { ReactNode } from "react";
-import type { Inventory, MapCell as MapCellType, Position } from "../../types";
+import type {
+  Inventory,
+  InventoryItem,
+  MapCell as MapCellType,
+  Position,
+} from "../../types";
 import { useLevelEditorContext } from "../LevelEditor";
+import { Clickable } from "../Clickable";
 
-const getIntoryItemById = (inventory: Inventory, id: string | undefined) => {
+const getInventoryItemById = (inventory: Inventory, id: string | undefined) => {
   return inventory.find((item) => item.id === id);
 };
 
-type MapCellChildren = {
-  item?: MapCellType;
+const inventoryItemToMapCell = (
+  inventoryItem: InventoryItem | undefined,
+  rotation: number,
+): MapCellType | undefined => {
+  if (!inventoryItem) {
+    return undefined;
+  }
+
+  return {
+    inventoryItem,
+    rotation,
+  };
 };
 
 type MapCellProps = {
-  item?: MapCellType;
+  mapCell?: MapCellType;
   position: Position;
-  children: (props: MapCellChildren) => ReactNode;
+  children: (props: MapCellType) => ReactNode;
   className?: string;
 };
 
 export const MapCell = ({
-  item,
+  mapCell,
   position,
   children,
   className,
 }: MapCellProps) => {
-  const { selectedItemId, setMap, inventory } = useLevelEditorContext();
+  const { selectedItemId, setMap, inventory, currentRotation } =
+    useLevelEditorContext();
+
+  const { inventoryItem, rotation } = mapCell || {};
 
   const setCellAt =
     (position: Position, selectedItemId: string | undefined) => () => {
       setMap((prevMap) => {
         const newMap = prevMap.map((row) => row.slice());
-        newMap[position.y][position.x] = getIntoryItemById(
+        const inventoryItem = getInventoryItemById(
           inventory,
-          selectedItemId || undefined
+          selectedItemId || undefined,
+        );
+        newMap[position.y][position.x] = inventoryItemToMapCell(
+          inventoryItem,
+          currentRotation,
         );
         return newMap;
       });
     };
 
   return (
-    <button onClick={setCellAt(position, selectedItemId)} className={className}>
-      {children({ item })}
-    </button>
+    <Clickable
+      onClick={setCellAt(position, selectedItemId)}
+      className={className}
+    >
+      {children({
+        inventoryItem,
+        rotation,
+      })}
+    </Clickable>
   );
 };

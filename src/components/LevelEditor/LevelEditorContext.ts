@@ -7,6 +7,7 @@ export type LevelEditorProps = {
   map: Map;
   setMap: (updater: (prevMap: Map) => Map) => void;
   inventory: Inventory;
+  currentRotation: number;
 } | null;
 
 export const LevelEditorContext = createContext<LevelEditorProps>(null);
