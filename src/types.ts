@@ -5,10 +5,12 @@ export type Position = {
 
 export type Inventory = InventoryItem[];
 
+export type InventoryItemId = number | undefined;
+
 export type InventoryItem = {
   imageUrl: string;
   label: string;
-  id: string;
+  id: InventoryItemId;
 };
 
 export type MapSize = [number, number];
@@ -16,6 +18,6 @@ export type MapSize = [number, number];
 export type Map = (MapCell | undefined)[][];
 
 export type MapCell = {
-  inventoryItem?: InventoryItem;
-  rotation?: number;
+  inventoryItemId: InventoryItemId;
+  rotation: number;
 };

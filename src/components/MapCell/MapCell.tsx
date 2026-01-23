@@ -2,34 +2,40 @@ import type { ReactNode } from "react";
 import type {
   Inventory,
   InventoryItem,
+  InventoryItemId,
   MapCell as MapCellType,
   Position,
 } from "../../types";
 import { useLevelEditorContext } from "../LevelEditor";
 import { Clickable } from "../Clickable";
 
-const getInventoryItemById = (inventory: Inventory, id: string | undefined) => {
-  return inventory.find((item) => item.id === id);
+const getInventoryItemById = (inventory: Inventory, id: InventoryItemId) => {
+  return inventory.find((item) => item?.id === id);
 };
 
 const inventoryItemToMapCell = (
-  inventoryItem: InventoryItem | undefined,
+  inventoryItemId: InventoryItemId,
   rotation: number,
 ): MapCellType | undefined => {
-  if (!inventoryItem) {
+  if (!inventoryItemId) {
     return undefined;
   }
 
   return {
-    inventoryItem,
+    inventoryItemId,
     rotation,
   };
+};
+
+type UnpackedMapCell = {
+  inventoryItem?: InventoryItem;
+  rotation?: number;
 };
 
 type MapCellProps = {
   mapCell?: MapCellType;
   position: Position;
-  children: (props: MapCellType) => ReactNode;
+  children: (props: UnpackedMapCell) => ReactNode;
   className?: string;
 };
 
@@ -42,18 +48,16 @@ export const MapCell = ({
   const { selectedItemId, setMap, inventory, currentRotation } =
     useLevelEditorContext();
 
-  const { inventoryItem, rotation } = mapCell || {};
+  const { rotation, inventoryItemId } = mapCell || {};
+
+  const inventoryItem = getInventoryItemById(inventory, inventoryItemId);
 
   const setCellAt =
-    (position: Position, selectedItemId: string | undefined) => () => {
+    (position: Position, selectedItemId: InventoryItemId) => () => {
       setMap((prevMap) => {
         const newMap = prevMap.map((row) => row.slice());
-        const inventoryItem = getInventoryItemById(
-          inventory,
-          selectedItemId || undefined,
-        );
         newMap[position.y][position.x] = inventoryItemToMapCell(
-          inventoryItem,
+          selectedItemId,
           currentRotation,
         );
         return newMap;

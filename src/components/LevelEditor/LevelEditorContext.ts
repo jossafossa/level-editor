@@ -1,9 +1,9 @@
 import { createContext } from "react";
-import type { Inventory, Map } from "../../types";
+import type { Inventory, InventoryItemId, Map } from "../../types";
 
 export type LevelEditorProps = {
-  selectedItemId?: string;
-  selectItem: (item: string) => void;
+  selectedItemId?: InventoryItemId;
+  selectItem: (inventoryItemId: InventoryItemId) => void;
   map: Map;
   setMap: (updater: (prevMap: Map) => Map) => void;
   inventory: Inventory;

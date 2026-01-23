@@ -7,17 +7,22 @@ const inventory: Inventory = [
   {
     imageUrl: "/tiles/tile-1.png",
     label: "Tile 1",
-    id: "1",
+    id: 1,
   },
   {
     imageUrl: "/tiles/tile-2.png",
     label: "Tile 2",
-    id: "2",
+    id: 2,
   },
   {
     imageUrl: "/tiles/tile-3.png",
     label: "Tile 3",
-    id: "3",
+    id: 3,
+  },
+  {
+    imageUrl: "/tiles/tile-empty.png",
+    label: "Empty",
+    id: undefined,
   },
 ];
 
@@ -28,41 +33,54 @@ function App() {
         {({ inventory, map, currentRotation, setCurrentRotation }) => (
           <div className={styles.levelEditor}>
             <Sidebar area="left" title="Inventory">
-              {inventory.map((item) => (
-                <InventoryItem item={item}>
-                  {({ isSelected }) => (
-                    <div className={styles[`rotation-${currentRotation}`]}>
-                      <img
-                        src={item.imageUrl}
-                        alt={item.label}
-                        className={isSelected ? styles.isSelected : ""}
-                      />
-                    </div>
-                  )}
-                </InventoryItem>
-              ))}
-              <input
-                type="range"
-                min={0}
-                max={3}
-                value={currentRotation}
-                onChange={(e) => setCurrentRotation(Number(e.target.value))}
-              />
-              {currentRotation * 90}°
+              <div className={styles.inverntory}>
+                <div className={styles.inventoryItems}>
+                  {inventory.map((item, index) => (
+                    <InventoryItem key={index} item={item}>
+                      {({ isSelected }) => (
+                        <div
+                          className={classNames(
+                            styles.inventoryItem,
+                            styles[`rotation-${currentRotation}`],
+                          )}
+                        >
+                          <img
+                            src={item.imageUrl}
+                            alt={item.label}
+                            className={isSelected ? styles.isSelected : ""}
+                          />
+                        </div>
+                      )}
+                    </InventoryItem>
+                  ))}
+                </div>
+                <label>
+                  <input
+                    type="range"
+                    min={0}
+                    max={3}
+                    value={currentRotation}
+                    onChange={(e) => setCurrentRotation(Number(e.target.value))}
+                  />
+                  rotation
+                  {currentRotation * 90}°
+                </label>
+              </div>
             </Sidebar>
 
             <div className={styles.mapContainer}>
               <div className={styles.map}>
                 {map.map((row, y) => (
-                  <div className={styles.mapRow}>
+                  <div key={y} className={styles.mapRow}>
                     {row.map((mapCell, x) => (
                       <MapCell
+                        key={x}
                         mapCell={mapCell}
                         position={{ x, y }}
                         className={styles.mapCell}
                       >
                         {({ inventoryItem, rotation }) =>
-                          inventoryItem && (
+                          inventoryItem?.id && (
                             <img
                               className={classNames(
                                 styles.mapCellImage,
