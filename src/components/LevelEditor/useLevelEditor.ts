@@ -1,12 +1,12 @@
 import { LevelEditorContext } from "./LevelEditorContext";
 import { useContext } from "react";
 
-export const useLevelEditorContext = () => {
+export const useLevelEditor = () => {
   const context = useContext(LevelEditorContext);
 
   if (context === null) {
     throw new Error(
-      "useLevelEditorContext can only be used inside a LevelEditorProvider"
+      "useLevelEditor can only be used inside a LevelEditorProvider",
     );
   }
 

@@ -1,9 +1,10 @@
 import { useState, type ReactNode } from "react";
 import { LevelEditorContext } from "./LevelEditorContext";
 import type { Inventory, InventoryItemId, Map } from "../../types";
-import { level } from "./level";
 import { useUrlSync } from "../../hooks";
 import { decodeMap, encodeMap } from "../../utils";
+import { PointerProvider } from "../PointerProvider/PointerProvider";
+import { getEmptyLevel } from "./getEmptyLevel";
 
 type LevelEditorChildren = {
   inventory: Inventory;
@@ -17,9 +18,11 @@ type LevelEditorProps = {
   inventory: Inventory;
 };
 
+const emptyLevel = getEmptyLevel(16, 16);
+
 export const LevelEditor = ({ children, inventory }: LevelEditorProps) => {
   const [selectedItemId, selectItem] = useState<InventoryItemId>();
-  const [map, setMap] = useUrlSync<Map>(level, {
+  const [map, setMap] = useUrlSync<Map>(emptyLevel, {
     key: "m",
     encode: encodeMap,
     decode: decodeMap,
@@ -27,17 +30,19 @@ export const LevelEditor = ({ children, inventory }: LevelEditorProps) => {
   const [currentRotation, setCurrentRotation] = useState(0);
 
   return (
-    <LevelEditorContext
-      value={{
-        selectedItemId,
-        selectItem,
-        map,
-        setMap,
-        inventory,
-        currentRotation,
-      }}
-    >
-      {children({ inventory, map, currentRotation, setCurrentRotation })}
-    </LevelEditorContext>
+    <PointerProvider>
+      <LevelEditorContext
+        value={{
+          selectedItemId,
+          selectItem,
+          map,
+          setMap,
+          inventory,
+          currentRotation,
+        }}
+      >
+        {children({ inventory, map, currentRotation, setCurrentRotation })}
+      </LevelEditorContext>
+    </PointerProvider>
   );
 };

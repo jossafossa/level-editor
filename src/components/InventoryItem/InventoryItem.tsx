@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { type InventoryItem as InventoryItemType } from "../../types";
-import { useLevelEditorContext } from "../LevelEditor";
+import { useLevelEditor } from "../LevelEditor";
 import { Clickable } from "../Clickable";
 
 type InventoryItemChildren = {
@@ -13,7 +13,7 @@ type InventoryItemProps = {
 };
 
 export const InventoryItem = ({ item, children }: InventoryItemProps) => {
-  const { selectItem, selectedItemId } = useLevelEditorContext();
+  const { selectItem, selectedItemId } = useLevelEditor();
 
   const isSelected = selectedItemId === item.id;
 

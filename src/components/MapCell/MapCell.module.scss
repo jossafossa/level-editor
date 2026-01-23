@@ -1,1 +1,3 @@
-.mapCell { }
+.mapCell > * {
+  pointer-events: none;
+}

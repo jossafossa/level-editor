@@ -6,8 +6,11 @@ import type {
   MapCell as MapCellType,
   Position,
 } from "../../types";
-import { useLevelEditorContext } from "../LevelEditor";
+import { useLevelEditor } from "../LevelEditor";
 import { Clickable } from "../Clickable";
+import { usePointer } from "../PointerProvider";
+import classNames from "classnames";
+import styles from "./Mapcell.module.scss";
 
 const getInventoryItemById = (inventory: Inventory, id: InventoryItemId) => {
   return inventory.find((item) => item?.id === id);
@@ -46,7 +49,9 @@ export const MapCell = ({
   className,
 }: MapCellProps) => {
   const { selectedItemId, setMap, inventory, currentRotation } =
-    useLevelEditorContext();
+    useLevelEditor();
+
+  const { isPointerDown } = usePointer();
 
   const { rotation, inventoryItemId } = mapCell || {};
 
@@ -64,10 +69,17 @@ export const MapCell = ({
       });
     };
 
+  const handlePointerEnter = () => {
+    console.log(isPointerDown);
+    if (!isPointerDown) return;
+    setCellAt(position, selectedItemId)();
+  };
+
   return (
     <Clickable
-      onClick={setCellAt(position, selectedItemId)}
-      className={className}
+      onPointerEnter={handlePointerEnter}
+      onPointerDown={setCellAt(position, selectedItemId)}
+      className={classNames(className, styles.mapCell)}
     >
       {children({
         inventoryItem,
