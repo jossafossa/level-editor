@@ -9,7 +9,7 @@
   height: 100%;
 }
 
-.inverntory {
+.inventory {
   padding: 1rem;
 }
 
@@ -57,16 +57,20 @@
 .mapCell {
   aspect-ratio: 1 / 1;
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
   border-right: 1px solid black;
 }
 
 .mapCellImage {
+  grid-area: 1 / 1;
   width: 100%;
   height: 100%;
   image-rendering: pixelated;
+}
+
+.ghostCellImage {
+  opacity: 0.8;
+  background-color: rgba(0, 0, 255, 0.2);
 }
 
 .isSelected {

@@ -16,13 +16,18 @@ type LevelEditorChildren = {
 type LevelEditorProps = {
   children: (props: LevelEditorChildren) => ReactNode;
   inventory: Inventory;
+  initialMap?: Map;
 };
 
 const emptyLevel = getEmptyLevel(16, 16);
 
-export const LevelEditor = ({ children, inventory }: LevelEditorProps) => {
+export const LevelEditor = ({
+  children,
+  inventory,
+  initialMap,
+}: LevelEditorProps) => {
   const [selectedItemId, selectItem] = useState<InventoryItemId>();
-  const [map, setMap] = useUrlSync<Map>(emptyLevel, {
+  const [map, setMap] = useUrlSync<Map>(initialMap ?? emptyLevel, {
     key: "m",
     encode: encodeMap,
     decode: decodeMap,

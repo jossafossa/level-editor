@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import type {
   Inventory,
   InventoryItem,
@@ -33,6 +33,7 @@ const inventoryItemToMapCell = (
 type UnpackedMapCell = {
   inventoryItem?: InventoryItem;
   rotation?: number;
+  ghost?: UnpackedMapCell;
 };
 
 type MapCellProps = {
@@ -50,6 +51,8 @@ export const MapCell = ({
 }: MapCellProps) => {
   const { selectedItemId, setMap, inventory, currentRotation } =
     useLevelEditor();
+
+  const [isGhost, setIsGhost] = useState(false);
 
   const { isPointerDown } = usePointer();
 
@@ -70,20 +73,35 @@ export const MapCell = ({
     };
 
   const handlePointerEnter = () => {
-    console.log(isPointerDown);
+    setIsGhost(true);
     if (!isPointerDown) return;
     setCellAt(position, selectedItemId)();
+  };
+
+  const handlePointerLeave = () => {
+    setIsGhost(false);
+    if (!isPointerDown) return;
+    setCellAt(position, selectedItemId)();
+  };
+
+  const ghost = {
+    rotation: currentRotation,
+    inventoryItem: isGhost
+      ? getInventoryItemById(inventory, selectedItemId)
+      : undefined,
   };
 
   return (
     <Clickable
       onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
       onPointerDown={setCellAt(position, selectedItemId)}
       className={classNames(className, styles.mapCell)}
     >
       {children({
         inventoryItem,
         rotation,
+        ghost,
       })}
     </Clickable>
   );
