@@ -13,74 +13,82 @@ import { level } from "./level";
 
 const inventory: InventoryType = [
   {
-    imageUrl: "/tiles/tile-1.png",
-    label: "Tile 1",
+    imageUrl: "/tiles/road-straight.png",
+    label: "Road Straight",
     id: 1,
+    canRotate: true,
   },
   {
-    imageUrl: "/tiles/tile-2.png",
-    label: "Tile 2",
+    imageUrl: "/tiles/road-turn.png",
+    label: "Road Turn",
     id: 2,
+    canRotate: true,
   },
   {
-    imageUrl: "/tiles/tile-3.png",
-    label: "Tile 3",
+    imageUrl: "/tiles/stone1.png",
+    label: "Stone 1",
     id: 3,
+    canRotate: false,
   },
   {
-    imageUrl: "/tiles/tile-4.png",
-    label: "Tile 4",
+    imageUrl: "/tiles/stone2.png",
+    label: "Stone 2",
     id: 4,
+    canRotate: false,
   },
   {
-    imageUrl: "/tiles/tile-5.png",
-    label: "Tile 5",
+    imageUrl: "/tiles/stone-horizontal.png",
+    label: "Stone Horizontal",
     id: 5,
+    canRotate: false,
   },
   {
-    imageUrl: "/tiles/tile-6.png",
-    label: "Tile 6",
+    imageUrl: "/tiles/stone-vertical.png",
+    label: "Stone Vertical",
     id: 6,
+    canRotate: false,
   },
   {
-    imageUrl: "/tiles/tile-7.png",
-    label: "Tile 7",
+    imageUrl: "/tiles/hedge-horizontal.png",
+    label: "Hedge Horizontal",
     id: 7,
+    canRotate: false,
   },
   {
-    imageUrl: "/tiles/tile-8.png",
-    label: "Tile 8",
+    imageUrl: "/tiles/hedge-vertical.png",
+    label: "Hedge Vertical",
     id: 8,
+    canRotate: false,
   },
   {
-    imageUrl: "/tiles/tile-9.png",
-    label: "Tile 9",
+    imageUrl: "/tiles/logs-horizontal.png",
+    label: "Logs Horizontal",
     id: 9,
+    canRotate: false,
   },
   {
-    imageUrl: "/tiles/tile-10.png",
-    label: "Tile 10",
+    imageUrl: "/tiles/logs-vertical.png",
+    label: "Logs Vertical",
     id: 10,
+    canRotate: false,
   },
   {
-    imageUrl: "/tiles/tile-11.png",
-    label: "Tile 11",
+    imageUrl: "/tiles/trees1.png",
+    label: "Trees 1",
     id: 11,
+    canRotate: false,
   },
   {
-    imageUrl: "/tiles/tile-12.png",
-    label: "Tile 12",
+    imageUrl: "/tiles/trees2.png",
+    label: "Trees 2",
     id: 12,
-  },
-  {
-    imageUrl: "/tiles/tile-13.png",
-    label: "Tile 13",
-    id: 13,
+    canRotate: false,
   },
   {
     imageUrl: "/tiles/tile-empty.png",
     label: "Empty",
     id: undefined,
+    canRotate: false,
   },
 ];
 
@@ -88,7 +96,7 @@ function App() {
   return (
     <div id={styles.app}>
       <LevelEditor inventory={inventory} initialMap={level}>
-        {({ currentRotation, setCurrentRotation }) => (
+        {({ setCurrentRotation, currentRotation }) => (
           <div className={styles.levelEditor}>
             <Sidebar area="left" title="Inventory">
               <Inventory>
@@ -97,11 +105,11 @@ function App() {
                     <div className={styles.inventoryItems}>
                       {inventory.map((item, index) => (
                         <InventoryItem key={index} item={item}>
-                          {({ isSelected }) => (
+                          {({ isSelected, rotation }) => (
                             <div
                               className={classNames(
                                 styles.inventoryItem,
-                                styles[`rotation-${currentRotation}`],
+                                styles[`rotation-${rotation}`],
                               )}
                             >
                               <img

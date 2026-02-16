@@ -11,6 +11,7 @@ export type InventoryItem = {
   imageUrl: string;
   label: string;
   id: InventoryItemId;
+  canRotate: boolean;
 };
 
 export type MapSize = [number, number];

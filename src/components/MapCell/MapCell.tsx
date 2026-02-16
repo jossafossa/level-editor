@@ -60,13 +60,16 @@ export const MapCell = ({
 
   const inventoryItem = getInventoryItemById(inventory, inventoryItemId);
 
+  const ghostItem = getInventoryItemById(inventory, selectedItemId);
+  const ghostRotation = ghostItem?.canRotate ? currentRotation : 0;
+
   const setCellAt =
     (position: Position, selectedItemId: InventoryItemId) => () => {
       setMap((prevMap) => {
         const newMap = prevMap.map((row) => row.slice());
         newMap[position.y][position.x] = inventoryItemToMapCell(
           selectedItemId,
-          currentRotation,
+          ghostRotation,
         );
         return newMap;
       });
@@ -85,10 +88,8 @@ export const MapCell = ({
   };
 
   const ghost = {
-    rotation: currentRotation,
-    inventoryItem: isGhost
-      ? getInventoryItemById(inventory, selectedItemId)
-      : undefined,
+    rotation: ghostRotation,
+    inventoryItem: isGhost ? ghostItem : undefined,
   };
 
   return (
