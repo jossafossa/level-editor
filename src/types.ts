@@ -7,7 +7,8 @@ export type Inventory = InventoryItem[];
 
 export type InventoryItemId = number | undefined;
 
-export type InventoryItem = {
+export type SingleInventoryItem = {
+  type: "single";
   imageUrl: string;
   label: string;
   id: InventoryItemId;
@@ -15,6 +16,15 @@ export type InventoryItem = {
   canFlipX: boolean;
   canFlipY: boolean;
 };
+
+export type EmptyInventoryItem = {
+  type: "empty";
+  imageUrl: string;
+  label: string;
+  id: InventoryItemId;
+};
+
+export type InventoryItem = SingleInventoryItem | EmptyInventoryItem;
 
 export type MapSize = [number, number];
 

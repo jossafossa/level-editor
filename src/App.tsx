@@ -13,6 +13,7 @@ import { level } from "./level";
 
 const inventory: InventoryType = [
   {
+    type: "single",
     imageUrl: "/tiles/road-straight.png",
     label: "Road Straight",
     id: 1,
@@ -21,6 +22,7 @@ const inventory: InventoryType = [
     canFlipY: true,
   },
   {
+    type: "single",
     imageUrl: "/tiles/road-turn.png",
     label: "Road Turn",
     id: 2,
@@ -29,6 +31,7 @@ const inventory: InventoryType = [
     canFlipY: true,
   },
   {
+    type: "single",
     imageUrl: "/tiles/stone1.png",
     label: "Stone 1",
     id: 3,
@@ -37,6 +40,7 @@ const inventory: InventoryType = [
     canFlipY: true,
   },
   {
+    type: "single",
     imageUrl: "/tiles/stone2.png",
     label: "Stone 2",
     id: 4,
@@ -45,6 +49,7 @@ const inventory: InventoryType = [
     canFlipY: true,
   },
   {
+    type: "single",
     imageUrl: "/tiles/stone-horizontal.png",
     label: "Stone Horizontal",
     id: 5,
@@ -53,6 +58,7 @@ const inventory: InventoryType = [
     canFlipY: true,
   },
   {
+    type: "single",
     imageUrl: "/tiles/stone-vertical.png",
     label: "Stone Vertical",
     id: 6,
@@ -61,6 +67,7 @@ const inventory: InventoryType = [
     canFlipY: true,
   },
   {
+    type: "single",
     imageUrl: "/tiles/hedge-horizontal.png",
     label: "Hedge Horizontal",
     id: 7,
@@ -69,6 +76,7 @@ const inventory: InventoryType = [
     canFlipY: true,
   },
   {
+    type: "single",
     imageUrl: "/tiles/hedge-vertical.png",
     label: "Hedge Vertical",
     id: 8,
@@ -77,6 +85,7 @@ const inventory: InventoryType = [
     canFlipY: true,
   },
   {
+    type: "single",
     imageUrl: "/tiles/logs-horizontal.png",
     label: "Logs Horizontal",
     id: 9,
@@ -85,6 +94,7 @@ const inventory: InventoryType = [
     canFlipY: false,
   },
   {
+    type: "single",
     imageUrl: "/tiles/logs-vertical.png",
     label: "Logs Vertical",
     id: 10,
@@ -93,6 +103,7 @@ const inventory: InventoryType = [
     canFlipY: false,
   },
   {
+    type: "single",
     imageUrl: "/tiles/trees1.png",
     label: "Trees 1",
     id: 11,
@@ -101,6 +112,7 @@ const inventory: InventoryType = [
     canFlipY: false,
   },
   {
+    type: "single",
     imageUrl: "/tiles/trees2.png",
     label: "Trees 2",
     id: 12,
@@ -109,12 +121,10 @@ const inventory: InventoryType = [
     canFlipY: false,
   },
   {
+    type: "empty",
     imageUrl: "/tiles/tile-empty.png",
     label: "Empty",
     id: undefined,
-    canRotate: false,
-    canFlipX: false,
-    canFlipY: false,
   },
 ];
 
@@ -138,21 +148,27 @@ function App() {
                     <div className={styles.inventoryItems}>
                       {inventory.map((item, index) => (
                         <InventoryItem key={index} item={item}>
-                          {({ isSelected, rotation, flippedX, flippedY }) => (
-                            <div
-                              className={classNames(
-                                styles.inventoryItem,
-                                styles[`rotation-${rotation}`],
-                                styles[`flipped-x-${flippedX}`],
-                                styles[`flipped-y-${flippedY}`],
+                          {(props) => (
+                            <>
+                              {props.type === "single" && (
+                                <div
+                                  className={classNames(
+                                    styles.inventoryItem,
+                                    styles[`rotation-${props.rotation}`],
+                                    styles[`flipped-x-${props.flippedX}`],
+                                    styles[`flipped-y-${props.flippedY}`],
+                                  )}
+                                >
+                                  <img
+                                    src={item.imageUrl}
+                                    alt={item.label}
+                                    className={
+                                      props.isSelected ? styles.isSelected : ""
+                                    }
+                                  />
+                                </div>
                               )}
-                            >
-                              <img
-                                src={item.imageUrl}
-                                alt={item.label}
-                                className={isSelected ? styles.isSelected : ""}
-                              />
-                            </div>
+                            </>
                           )}
                         </InventoryItem>
                       ))}
@@ -205,9 +221,10 @@ function App() {
                             className={styles.mapCell}
                           >
                             {({
+                              type,
                               inventoryItem,
-                              rotation,
                               ghost,
+                              rotation,
                               flippedX,
                               flippedY,
                             }) => (

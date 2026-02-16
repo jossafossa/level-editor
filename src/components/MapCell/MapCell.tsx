@@ -34,11 +34,18 @@ const inventoryItemToMapCell = (
   };
 };
 
-type UnpackedMapCell = {
-  inventoryItem?: InventoryItem;
-  rotation?: number;
-  flippedX?: boolean;
-  flippedY?: boolean;
+type UnpackedMapSingleCell = {
+  type: "single";
+  rotation: number;
+  flippedX: boolean;
+  flippedY: boolean;
+};
+
+type UnpackedMapEmptyCell = {
+  type: "empty";
+};
+
+type UnpackedMapCell = (UnpackedMapSingleCell | UnpackedMapEmptyCell) & {
   ghost?: UnpackedMapCell;
 };
 
@@ -73,14 +80,30 @@ export const MapCell = ({
   const inventoryItem = getInventoryItemById(inventory, inventoryItemId);
 
   const ghostItem = getInventoryItemById(inventory, selectedItemId);
-  const ghostRotation = ghostItem?.canRotate ? currentRotation : 0;
-  const ghostFlippedX = ghostItem?.canFlipX ? currentFlippedX : false;
-  const ghostFlippedY = ghostItem?.canFlipY ? currentFlippedY : false;
+
+  const getProps = (item?: InventoryItem) => {
+    if (!item) {
+      return {};
+    }
+
+    switch (item.type) {
+      case "single":
+        return {
+          type: item.type,
+          rotation: item.canRotate ? currentRotation : 0,
+          flippedX: item.canFlipX ? currentFlippedX : false,
+          flippedY: item.canFlipY ? currentFlippedY : false,
+        };
+      case "empty":
+        return {
+          type: item.type,
+        };
+    }
+  };
+
   const ghost = {
-    rotation: ghostRotation,
     inventoryItem: isGhost ? ghostItem : undefined,
-    flippedX: ghostFlippedX,
-    flippedY: ghostFlippedY,
+    ...getProps(ghostItem),
   };
 
   const setCellAt =
@@ -89,9 +112,9 @@ export const MapCell = ({
         const newMap = prevMap.map((row) => row.slice());
         newMap[position.y][position.x] = inventoryItemToMapCell(
           selectedItemId,
-          ghostRotation,
-          ghostFlippedX,
-          ghostFlippedY,
+          ghost.rotation,
+          ghost.flippedX,
+          ghost.flippedY,
         );
         return newMap;
       });
@@ -118,10 +141,10 @@ export const MapCell = ({
     >
       {children({
         inventoryItem,
+        ghost,
         rotation,
         flippedX,
         flippedY,
-        ghost,
       })}
     </Clickable>
   );
