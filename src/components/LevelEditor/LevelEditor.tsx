@@ -11,6 +11,10 @@ type LevelEditorChildren = {
   map: Map;
   currentRotation: number;
   setCurrentRotation: (rotation: number) => void;
+  currentFlippedX: boolean;
+  setCurrentFlippedX: (flipped: boolean) => void;
+  currentFlippedY: boolean;
+  setCurrentFlippedY: (flipped: boolean) => void;
 };
 
 type LevelEditorProps = {
@@ -33,6 +37,8 @@ export const LevelEditor = ({
     decode: decodeMap,
   });
   const [currentRotation, setCurrentRotation] = useState(0);
+  const [currentFlippedX, setCurrentFlippedX] = useState(false);
+  const [currentFlippedY, setCurrentFlippedY] = useState(false);
 
   return (
     <PointerProvider>
@@ -44,9 +50,20 @@ export const LevelEditor = ({
           setMap,
           inventory,
           currentRotation,
+          currentFlippedX,
+          currentFlippedY,
         }}
       >
-        {children({ inventory, map, currentRotation, setCurrentRotation })}
+        {children({
+          inventory,
+          map,
+          currentRotation,
+          setCurrentRotation,
+          currentFlippedX,
+          setCurrentFlippedX,
+          currentFlippedY,
+          setCurrentFlippedY,
+        })}
       </LevelEditorContext>
     </PointerProvider>
   );

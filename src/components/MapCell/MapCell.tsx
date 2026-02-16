@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import type {
   Inventory,
   InventoryItem,
@@ -19,6 +19,8 @@ const getInventoryItemById = (inventory: Inventory, id: InventoryItemId) => {
 const inventoryItemToMapCell = (
   inventoryItemId: InventoryItemId,
   rotation: number,
+  flippedX: boolean,
+  flippedY: boolean,
 ): MapCellType | undefined => {
   if (!inventoryItemId) {
     return undefined;
@@ -27,12 +29,16 @@ const inventoryItemToMapCell = (
   return {
     inventoryItemId,
     rotation,
+    flippedX,
+    flippedY,
   };
 };
 
 type UnpackedMapCell = {
   inventoryItem?: InventoryItem;
   rotation?: number;
+  flippedX?: boolean;
+  flippedY?: boolean;
   ghost?: UnpackedMapCell;
 };
 
@@ -49,19 +55,33 @@ export const MapCell = ({
   children,
   className,
 }: MapCellProps) => {
-  const { selectedItemId, setMap, inventory, currentRotation } =
-    useLevelEditor();
+  const {
+    selectedItemId,
+    setMap,
+    inventory,
+    currentRotation,
+    currentFlippedX,
+    currentFlippedY,
+  } = useLevelEditor();
 
   const [isGhost, setIsGhost] = useState(false);
 
   const { isPointerDown } = usePointer();
 
-  const { rotation, inventoryItemId } = mapCell || {};
+  const { rotation, inventoryItemId, flippedX, flippedY } = mapCell || {};
 
   const inventoryItem = getInventoryItemById(inventory, inventoryItemId);
 
   const ghostItem = getInventoryItemById(inventory, selectedItemId);
   const ghostRotation = ghostItem?.canRotate ? currentRotation : 0;
+  const ghostFlippedX = ghostItem?.canFlipX ? currentFlippedX : false;
+  const ghostFlippedY = ghostItem?.canFlipY ? currentFlippedY : false;
+  const ghost = {
+    rotation: ghostRotation,
+    inventoryItem: isGhost ? ghostItem : undefined,
+    flippedX: ghostFlippedX,
+    flippedY: ghostFlippedY,
+  };
 
   const setCellAt =
     (position: Position, selectedItemId: InventoryItemId) => () => {
@@ -70,6 +90,8 @@ export const MapCell = ({
         newMap[position.y][position.x] = inventoryItemToMapCell(
           selectedItemId,
           ghostRotation,
+          ghostFlippedX,
+          ghostFlippedY,
         );
         return newMap;
       });
@@ -87,11 +109,6 @@ export const MapCell = ({
     setCellAt(position, selectedItemId)();
   };
 
-  const ghost = {
-    rotation: ghostRotation,
-    inventoryItem: isGhost ? ghostItem : undefined,
-  };
-
   return (
     <Clickable
       onPointerEnter={handlePointerEnter}
@@ -102,6 +119,8 @@ export const MapCell = ({
       {children({
         inventoryItem,
         rotation,
+        flippedX,
+        flippedY,
         ghost,
       })}
     </Clickable>

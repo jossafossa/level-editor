@@ -20,6 +20,8 @@ export function encodeMap(map: Map): string {
         for (let i = 7; i >= 0; i--)
           bitStream.push((cell.inventoryItemId >> i) & 1);
         for (let i = 1; i >= 0; i--) bitStream.push((cell.rotation >> i) & 1);
+        bitStream.push(cell.flippedX ? 1 : 0);
+        bitStream.push(cell.flippedY ? 1 : 0);
       }
     }
   }
@@ -71,7 +73,9 @@ export function decodeMap(base64: string): Map {
       if (readBits(1) === 1) {
         const inventoryItemId = readBits(8);
         const rotation = readBits(2);
-        map[r][c] = { inventoryItemId, rotation };
+        const flippedX = readBits(1) === 1;
+        const flippedY = readBits(1) === 1;
+        map[r][c] = { inventoryItemId, rotation, flippedX, flippedY };
       }
     }
   }

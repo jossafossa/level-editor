@@ -6,6 +6,8 @@ import { Clickable } from "../Clickable";
 type InventoryItemChildren = {
   isSelected: boolean;
   rotation: number;
+  flippedX: boolean;
+  flippedY: boolean;
 };
 
 type InventoryItemProps = {
@@ -14,13 +16,23 @@ type InventoryItemProps = {
 };
 
 export const InventoryItem = ({ item, children }: InventoryItemProps) => {
-  const { selectItem, selectedItemId, currentRotation } = useLevelEditor();
+  const {
+    selectItem,
+    selectedItemId,
+    currentRotation,
+    currentFlippedX,
+    currentFlippedY,
+  } = useLevelEditor();
 
   const isSelected = selectedItemId === item.id;
 
+  const rotation = item.canRotate ? currentRotation : 0;
+  const flippedX = item.canFlipX ? currentFlippedX : false;
+  const flippedY = item.canFlipY ? currentFlippedY : false;
+
   return (
     <Clickable onClick={() => selectItem(item.id)}>
-      {children({ isSelected, rotation: item.canRotate ? currentRotation : 0 })}
+      {children({ isSelected, rotation, flippedX, flippedY })}
     </Clickable>
   );
 };

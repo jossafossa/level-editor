@@ -8,6 +8,8 @@ export type LevelEditorProps = {
   setMap: (updater: (prevMap: Map) => Map) => void;
   inventory: Inventory;
   currentRotation: number;
+  currentFlippedX: boolean;
+  currentFlippedY: boolean;
 } | null;
 
 export const LevelEditorContext = createContext<LevelEditorProps>(null);

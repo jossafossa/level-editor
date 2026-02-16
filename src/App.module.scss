@@ -20,8 +20,11 @@
 }
 
 .inventoryItem {
+  --scale-x: 1;
+  --scale-y: 1;
   width: 100%;
   aspect-ratio: 1 / 1;
+  scale: var(--scale-x) var(--scale-y);
 
   > img {
     width: 100%;
@@ -62,10 +65,13 @@
 }
 
 .mapCellImage {
+  --scale-x: 1;
+  --scale-y: 1;
   grid-area: 1 / 1;
   width: 100%;
   height: 100%;
   image-rendering: pixelated;
+  scale: var(--scale-x) var(--scale-y);
 }
 
 .ghostCellImage {
@@ -91,4 +97,12 @@
 
 .rotation-3 {
   transform: rotate(270deg);
+}
+
+.flipped-x-true {
+  --scale-x: -1;
+}
+
+.flipped-y-true {
+  --scale-y: -1;
 }

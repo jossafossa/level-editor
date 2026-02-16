@@ -12,6 +12,8 @@ export type InventoryItem = {
   label: string;
   id: InventoryItemId;
   canRotate: boolean;
+  canFlipX: boolean;
+  canFlipY: boolean;
 };
 
 export type MapSize = [number, number];
@@ -21,4 +23,6 @@ export type Map = (MapCell | undefined)[][];
 export type MapCell = {
   inventoryItemId: InventoryItemId;
   rotation: number;
+  flippedX: boolean;
+  flippedY: boolean;
 };
