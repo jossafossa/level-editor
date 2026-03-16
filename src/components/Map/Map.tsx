@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import styles from "./Map.module.scss";
 import { useLevelEditor } from "../LevelEditor";
 import type { Map as MapType } from "../../types";
 
