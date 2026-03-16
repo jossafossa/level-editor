@@ -1,75 +1,62 @@
-# React + TypeScript + Vite
+# Level Editor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, web-based level editor built with React and TypeScript. Create and edit game levels with an intuitive drag-and-drop interface. It is still in early development.
 
-Currently, two official plugins are available:
+## 🚀 Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Check out the live demo: [level-editor.jossafossa.nl](https://level-editor.jossafossa.nl)
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- **React 19** - UI framework
+- **TypeScript** - Type safety
+- **Vite** - Fast build tool
+- **Sass** - CSS preprocessing
+- **Plop** - Code generation
 
-Note: This will impact Vite dev & build performances.
+## ⚡ Quickstart
 
-## Expanding the ESLint configuration
+Make sure you have [pnpm](https://pnpm.io) installed.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+# Install dependencies
+pnpm install
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# Start development server
+pnpm dev
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# Build for production
+pnpm build
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Preview production build
+pnpm preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🔧 Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Available Scripts
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm lint` - Run ESLint
+- `pnpm preview` - Preview production build
+- `pnpm create` - Generate components using Plop templates
+
+### Project Structure
+
+The project uses a component-based architecture with:
+
+- `src/components/` - Reusable UI components
+- `src/hooks/` - Custom React hooks
+- `src/utils/` - Utility functions
+- `tooling/` - Development tools and templates
+
+### Code Generation
+
+Generate new components quickly:
+
+```bash
+pnpm create
 ```
+
+This will prompt you to create components, hooks, or utilities with pre-configured templates.
