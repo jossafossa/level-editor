@@ -10,7 +10,7 @@ import { useLevelEditor } from "../LevelEditor";
 import { Clickable } from "../Clickable";
 import { usePointer } from "../PointerProvider";
 import classNames from "classnames";
-import styles from "./Mapcell.module.scss";
+import styles from "./MapCell.module.scss";
 
 const getInventoryItemById = (inventory: Inventory, id: InventoryItemId) => {
   return inventory.find((item) => item?.id === id);
